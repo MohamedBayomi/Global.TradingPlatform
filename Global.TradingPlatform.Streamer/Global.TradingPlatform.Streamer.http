@@ -1,0 +1,6 @@
+@Global.TradingPlatform.Streamer_HostAddress = http://localhost:5035
+
+GET {{Global.TradingPlatform.Streamer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

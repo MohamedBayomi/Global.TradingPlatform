@@ -17,7 +17,7 @@ namespace Global.TradingPlatform.DesktopApp
             _SubmissionUrl = configuration["ApiSettings:Submission"];
         }
         
-        public static async Task<OrderRequest> SubmitAsync(OrderRequest order)
+        public static async Task<Order> SubmitAsync(OrderRequest order)
         {
             using (var client = new HttpClient())
             {
@@ -33,7 +33,7 @@ namespace Global.TradingPlatform.DesktopApp
                 response.EnsureSuccessStatusCode();
 
                 // Deserialize the response content into an Order object
-                var result = await response.Content.ReadFromJsonAsync<OrderRequest>();
+                var result = await response.Content.ReadFromJsonAsync<Order>();
 
                 return result;
             }

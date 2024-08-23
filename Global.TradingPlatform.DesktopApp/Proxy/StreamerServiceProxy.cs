@@ -1,43 +1,36 @@
-﻿namespace Global.TradingPlatform.DesktopApp
+﻿using Microsoft.AspNetCore.SignalR.Client;
+
+namespace Global.TradingPlatform.DesktopApp
 {
     internal static class StreamerServiceProxy
     {
-        public static List<OrderRequest> GetSnapshotOrders()
+        private static HubConnection _hubConnection;
+        private static List<Order> orders = new List<Order>();
+
+        public static void Subscribe()
         {
-            return new List<OrderRequest>
+            _hubConnection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5000/streaming")
+                .Build();
+
+            // Set up event handler for receiving messages
+            _hubConnection.On<Order>("ReceiveOrderUpdate", orders.Add);
+
+            try
             {
-                new OrderRequest
-                {
-                    ClordID = Guid.NewGuid(),
-                    CreatedBy = "mohamed",
-                    ExecutedQuantity = 0,
-                    OrderID = 1,
-                    Price = 100,
-                    Quantity = 100,
-                    RemainingQuantity = 100,
-                    Side = "Buy",
-                    Status = "New",
-                    Symbol = "AAPL"
-                },
-                new OrderRequest
-                {
-                    ClordID = Guid.NewGuid(),
-                    CreatedBy = "ahmed",
-                    ExecutedQuantity = 0,
-                    OrderID = 2,
-                    Price = 200,
-                    Quantity = 200,
-                    RemainingQuantity = 200,
-                    Side = "Sell",
-                    Status = "New",
-                    Symbol = "MSFT"
-                }
-            };
+                // Start the connection
+                _hubConnection.StartAsync().Wait();
+                MessageBox.Show("Connected to SignalR hub.\n");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error connecting to SignalR hub: {ex.Message}\n");
+            }
         }
 
-        internal static void Subscribe()
+        public static List<Order> GetSnapshotOrders()
         {
-            
+            return orders;
         }
     }
 }

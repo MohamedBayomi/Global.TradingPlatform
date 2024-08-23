@@ -2,11 +2,11 @@
 {
     public partial class frmMainGrid : Form
     {
-        List<OrderRequest> orders = new List<OrderRequest>();
+        List<Order> orders = new();
         public frmMainGrid()
         {
             InitializeComponent();
-            
+
             dataGridView1.DataSource = orders;
             // make grid column width auto size based on header and content
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
