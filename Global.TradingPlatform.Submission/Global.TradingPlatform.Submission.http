@@ -1,0 +1,6 @@
+@Global.TradingPlatform.Submission_HostAddress = http://localhost:5147
+
+GET {{Global.TradingPlatform.Submission_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
