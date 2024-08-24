@@ -29,6 +29,8 @@
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddSignalR();
+            services.AddSingleton<IOrdersRepository, OrdersRepository_InMemoryCache>(); // Register the consumer
             services.AddHostedService<Consumer>(); // Register the background worker
         }
 
@@ -43,10 +45,11 @@
             app.UseSwagger();
             app.UseSwaggerUI();
             app.UseAuthorization();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<OrdersStreamHub>("/hubs/ordersstream");
             });
         }
     }

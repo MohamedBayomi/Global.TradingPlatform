@@ -10,6 +10,7 @@
             dataGridView1.DataSource = orders;
             // make grid column width auto size based on header and content
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.Text = $"Trading Platform - {UserInfo.CurrentUser.Username}";
         }
 
         private void newOrderToolStripMenuItem_Click(object sender, EventArgs e)
@@ -20,10 +21,22 @@
 
         private void frmMainGrid_Load(object sender, EventArgs e)
         {
-            orders = StreamerServiceProxy.GetSnapshotOrders();
-            dataGridView1.DataSource = orders;
+            var _connection = new OrdersHubClient();
+            _connection.OnOrderUpdate += (sender, order) =>
+            {
+                //orders.Add(order);
+                dataGridView1.Invoke(new Action(() =>
+                {
+                    //orders.Add(order);
+                    dataGridView1.DataSource = null;
+                    dataGridView1.DataSource = orders;
+                }));
+            };
+            orders = _connection.GetAllOrders();
 
-            StreamerServiceProxy.Subscribe();
+
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = orders;
         }
     }
 }

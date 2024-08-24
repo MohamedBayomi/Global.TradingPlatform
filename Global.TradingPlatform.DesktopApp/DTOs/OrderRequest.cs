@@ -1,6 +1,6 @@
 ﻿namespace Global.TradingPlatform.DesktopApp
 {
-    internal class OrderRequest
+    public class OrderRequest
     {
         public Guid ClordID { get; set; }
         public string Symbol { get; set; }

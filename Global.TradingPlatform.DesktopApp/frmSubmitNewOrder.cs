@@ -10,6 +10,7 @@
             ClordID = Guid.NewGuid();
             txtClordID.Text = ClordID.ToString();
             txtCreatedBy.Text = UserInfo.CurrentUser.Username;
+            this.Text = $"Submit Order - {UserInfo.CurrentUser.Username}";
         }
 
         private async void btnSubmit_Click(object sender, EventArgs e)

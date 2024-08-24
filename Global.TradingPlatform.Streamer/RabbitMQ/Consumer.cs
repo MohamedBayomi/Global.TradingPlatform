@@ -1,4 +1,6 @@
-﻿using RabbitMQ.Client;
+﻿using Microsoft.AspNetCore.SignalR;
+
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 using System.Data.Common;
@@ -15,14 +17,15 @@ namespace Global.TradingPlatform.Streamer
         private readonly ILogger<Consumer> _logger;
         private IConnection _connection;
         private IModel _channel;
+        private IOrdersRepository ordersRepository;
+        private readonly IHubContext<OrdersStreamHub, IOrdersStream> _ordersStreamHub;
 
-        //private readonly IStreaming streaming;
-
-        public Consumer(ILogger<Consumer> logger, IConfiguration configuration/*, IStreaming streaming*/)
+        public Consumer(ILogger<Consumer> logger, IConfiguration configuration, IOrdersRepository ordersRepository, IHubContext<OrdersStreamHub, IOrdersStream> _ordersStreamHub)
         {
             _logger = logger;
             this._configuration = configuration;
-            //this.streaming = streaming;
+            this._ordersStreamHub = _ordersStreamHub;
+            this.ordersRepository = ordersRepository;
             InitializeRabbitMQ();
         }
         private void InitializeRabbitMQ()
@@ -78,7 +81,7 @@ namespace Global.TradingPlatform.Streamer
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var order = JsonSerializer.Deserialize<Order>(message);
-
+                ProcessMessageAsync(message);
                 _logger.LogInformation("Received Order: {0}", message);
 
                 // Here you can do further processing, like saving to a database
@@ -98,13 +101,20 @@ namespace Global.TradingPlatform.Streamer
             return Task.CompletedTask;
         }
 
+
+        private async Task PublishOrderStream(Order order)
+        {
+            await _ordersStreamHub.Clients.All.ReceiveOrderUpdate(order);
+        }
+
         private Task ProcessMessageAsync(string message)
         {
             // Simulate some asynchronous work
             return Task.Run(() =>
             {
                 var order = JsonSerializer.Deserialize<Order>(message);
-
+                ordersRepository.Add(order);
+                PublishOrderStream(order);
                 // Add your message processing logic here
                 _logger.LogInformation(" [x] Received {0} {1}", order.OrderID, order.CreatedBy);
             });

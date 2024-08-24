@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Global.TradingPlatform.DesktopApp
 {
-    internal class Order : OrderRequest
+    public class Order : OrderRequest
     {
         public int OrderID { get; set; }
         public string Status { get; set; }

@@ -13,8 +13,8 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public void Get()
+    [HttpGet(Name = "GetSnapshotOrders")]
+    public void GetSnapshotOrders()
     {
     }
 }
