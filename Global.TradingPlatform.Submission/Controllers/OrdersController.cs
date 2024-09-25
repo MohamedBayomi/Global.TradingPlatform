@@ -8,11 +8,13 @@ namespace Global.TradingPlatform.Submission
     {
         private readonly IOrdersRepository ordersRepository;
         private readonly IProducer producer;
+        private readonly ILogger<OrdersController> logger;
 
-        public OrdersController(IOrdersRepository ordersRepository, IProducer producer)
+        public OrdersController(IOrdersRepository ordersRepository, IProducer producer, ILogger<OrdersController> logger)
         {
             this.ordersRepository = ordersRepository;
             this.producer = producer;
+            this.logger = logger;
         }
 
         [HttpGet()]
@@ -35,9 +37,11 @@ namespace Global.TradingPlatform.Submission
                 return BadRequest(ModelState);
             }
 
+            logger.LogInformation(">>> Received Order: {0} with Hashcode: {1}", request, request.GetHashCode());
             var newOrder = ordersRepository.Create(request);
             newOrder.Status = "PendingNew";
 
+            logger.LogInformation(">>> Order to RMQ: {0} with Hashcode: {1}", newOrder, newOrder.GetHashCode());
             // Send the order to RabbitMQ
             producer.SendOrder(newOrder);
 

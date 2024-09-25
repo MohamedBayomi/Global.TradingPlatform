@@ -82,7 +82,7 @@ namespace Global.TradingPlatform.Streamer
                 var message = Encoding.UTF8.GetString(body);
                 var order = JsonSerializer.Deserialize<Order>(message);
                 ProcessMessageAsync(message);
-                _logger.LogInformation("Received Order: {0}", message);
+                _logger.LogInformation("Received Order: {0} with Hashcode: {1}", message, message.GetHashCode());
 
                 // Here you can do further processing, like saving to a database
             };
