@@ -33,7 +33,8 @@
                 txtStatus.Text = result.Status.ToString();
                 txtExecutedQuantity.Text = result.ExecutedQuantity.ToString();
                 txtRemainingQuantity.Text = result.RemainingQuantity.ToString();
-                MessageBox.Show($"Order submitted successfully! [OrderID: {result.OrderID}]\r\n[ClordID: {result.ClordID}]");
+                //MessageBox.Show($"Order submitted successfully! [OrderID: {result.OrderID}]\r\n[ClordID: {result.ClordID}]");
+                this.Close();
             }
             catch (Exception ex)
             {

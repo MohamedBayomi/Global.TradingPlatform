@@ -37,6 +37,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSubmitNewOrder));
             lblClordID = new Label();
             txtClordID = new TextBox();
             lblOrderID = new Label();
@@ -286,6 +287,7 @@
             Controls.Add(txtCreatedBy);
             Controls.Add(btnClear);
             Controls.Add(btnSubmit);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmSubmitNewOrder";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Submit New Order";

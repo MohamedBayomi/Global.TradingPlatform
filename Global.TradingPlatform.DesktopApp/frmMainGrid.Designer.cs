@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainGrid));
             dataGridView1 = new DataGridView();
             menuStrip1 = new MenuStrip();
             newOrderToolStripMenuItem = new ToolStripMenuItem();
@@ -73,9 +74,9 @@
             ClientSize = new Size(800, 450);
             Controls.Add(dataGridView1);
             Controls.Add(menuStrip1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1;
             Name = "frmMainGrid";
-            Text = "Main Grid";
             WindowState = FormWindowState.Maximized;
             Load += frmMainGrid_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
