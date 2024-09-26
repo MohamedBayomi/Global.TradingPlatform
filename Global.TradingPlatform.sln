@@ -5,11 +5,15 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.DesktopApp", "Global.TradingPlatform.DesktopApp\Global.TradingPlatform.DesktopApp.csproj", "{711CF3E0-551F-45B4-90D3-3D16DA33A666}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Submission", "Global.TradingPlatform.Submission\Global.TradingPlatform.Submission.csproj", "{F3A3DFF8-1457-4289-81B6-39E5AE467427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.OrderService", "Global.TradingPlatform.OrderService\Global.TradingPlatform.OrderService.csproj", "{F3A3DFF8-1457-4289-81B6-39E5AE467427}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Streamer", "Global.TradingPlatform.Streamer\Global.TradingPlatform.Streamer.csproj", "{530C9121-C931-462F-86EF-77836FB7DF4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "redisclientconsumer", "redisclientconsumer\redisclientconsumer.csproj", "{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "redisclientconsumer", "redisclientconsumer\redisclientconsumer.csproj", "{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Exchange", "Global.TradingPlatform.Exchange\Global.TradingPlatform.Exchange.csproj", "{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.OrderUpdater", "Global.TradingPlatform.OrderUpdater\Global.TradingPlatform.OrderUpdater.csproj", "{82E0591E-2B01-4DC4-B1BC-A064177C5552}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-namespace Global.TradingPlatform.Submission
+namespace Global.TradingPlatform.Exchange
 {
     public class Producer : IProducer
     {
@@ -22,19 +22,13 @@ namespace Global.TradingPlatform.Submission
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
-                channel.ExchangeDeclare("Order_logs", ExchangeType.Fanout);
-                /*channel.QueueDeclare(queue: "order_queue",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
-                */
+                channel.ExchangeDeclare("x_orders", ExchangeType.Direct);
 
                 string message = System.Text.Json.JsonSerializer.Serialize(order);
                 var body = Encoding.UTF8.GetBytes(message);
 
-                channel.BasicPublish(exchange: "Order_logs", //default exchange "",messages are routed to the queue with the name specified by routingKey
-                                     routingKey: "",
+                channel.BasicPublish(exchange: "x_orders",
+                                     routingKey: "x_executions",
                                      basicProperties: null,
                                      body: body);
 

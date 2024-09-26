@@ -1,0 +1,6 @@
+@Global.TradingPlatform.Exchange_HostAddress = http://localhost:5035
+
+GET {{Global.TradingPlatform.Exchange_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Global.TradingPlatform.Submission
+namespace Global.TradingPlatform.OrderService
 {
     [Route("[controller]")]
     [ApiController]

@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>a92a98a2-2b45-4004-9a0a-240935b7af74</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyName>OrderUpdater</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

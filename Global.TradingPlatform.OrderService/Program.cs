@@ -1,5 +1,5 @@
 
-namespace Global.TradingPlatform.Submission
+namespace Global.TradingPlatform.OrderService
 {
     public class Program
     {

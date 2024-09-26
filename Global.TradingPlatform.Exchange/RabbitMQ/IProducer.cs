@@ -1,4 +1,4 @@
-﻿namespace Global.TradingPlatform.Submission
+﻿namespace Global.TradingPlatform.Exchange
 {
     public interface IProducer
     {
