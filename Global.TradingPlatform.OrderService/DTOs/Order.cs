@@ -7,6 +7,10 @@
         public int ExecutedQuantity { get; set; }
         public int RemainingQuantity { get; set; }
 
+        public Order()
+        {
+
+        }
         public Order(OrderRequest request)
         {
             this.ClordID = request.ClordID;
@@ -16,6 +20,7 @@
             this.Symbol = request.Symbol;
             this.CreatedBy = request.CreatedBy;
             this.RemainingQuantity = request.Quantity;
+            this.Status = "PendingNew";
         }
     }
 }

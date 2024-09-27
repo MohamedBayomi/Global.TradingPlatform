@@ -15,12 +15,15 @@ namespace Global.TradingPlatform.Exchange
         private readonly ILogger<Consumer> _logger;
         private IConnection _connection;
         private IModel _channel;
+        private int executions;
 
         public Consumer(ILogger<Consumer> logger, IConfiguration configuration, IProducer producer)
         {
             _logger = logger;
             _configuration = configuration;
             _producer = producer;
+            var strexecutions = _configuration["settings:executions"];
+            int.TryParse(strexecutions, out executions);
             InitializeRabbitMQ();
         }
 
@@ -84,7 +87,27 @@ namespace Global.TradingPlatform.Exchange
 
         private void Execute(Order order)
         {
+            order.ExecutedQuantity = 0;
+            order.RemainingQuantity = order.Quantity;
+            order.Status = "Accepted";
+            _producer.SendOrder(order);
+
+            if (order.Quantity < executions)
+                executions = order.Quantity;
+            
+            int delta = order.Quantity / executions;
+            int error = order.Quantity - delta * executions;
+
+            for (int i = 1; i < executions; i++)
+            {
+                order.ExecutedQuantity += delta + ((error-- > 0) ? 1 : 0);
+                order.RemainingQuantity = order.Quantity - order.ExecutedQuantity;
+                order.Status = "PartiallyExecuted";
+                _producer.SendOrder(order);
+            }
+
             order.ExecutedQuantity = order.Quantity;
+            order.RemainingQuantity = 0;
             order.Status = "FullyExecuted";
             _producer.SendOrder(order);
         }

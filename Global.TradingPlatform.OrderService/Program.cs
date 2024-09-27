@@ -1,4 +1,6 @@
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Global.TradingPlatform.OrderService
 {
     public class Program
@@ -17,8 +19,10 @@ namespace Global.TradingPlatform.OrderService
                     });
             });
             // Add services to the container.
-            builder.Services.AddSingleton<IOrdersRepository, OrdersRepository_InMemoryCache>();
-            builder.Services.AddSingleton<IProducer, Producer>();
+            builder.Services.AddScoped<IOrdersRepository, OrdersRepository_DB>();
+            builder.Services.AddScoped<IProducer, Producer>();
+            builder.Services.AddDbContext<TradingPlatformContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("BrokerageConnection")));
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
