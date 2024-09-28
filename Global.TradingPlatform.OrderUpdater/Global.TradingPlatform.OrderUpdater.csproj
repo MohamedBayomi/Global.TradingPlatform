@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <AssemblyName>OrderUpdater</AssemblyName>
+    <UserSecretsId>7cbac7fc-e779-415b-9e08-b88431425041</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

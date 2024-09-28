@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Orde
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Streamer", "Global.TradingPlatform.Streamer\Global.TradingPlatform.Streamer.csproj", "{530C9121-C931-462F-86EF-77836FB7DF4B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "redisclientconsumer", "redisclientconsumer\redisclientconsumer.csproj", "{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.Exchange", "Global.TradingPlatform.Exchange\Global.TradingPlatform.Exchange.csproj", "{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Global.TradingPlatform.OrderUpdater", "Global.TradingPlatform.OrderUpdater\Global.TradingPlatform.OrderUpdater.csproj", "{82E0591E-2B01-4DC4-B1BC-A064177C5552}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{7BCF211B-75BA-40E2-84E8-1448B475E7D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{42B95607-A2CC-4FAD-9EAF-72A4F6316F45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeesPortal.Shared", "EmployeesPortal.Shared\EmployeesPortal.Shared.csproj", "{4B8339C4-B141-4945-9795-E2B69AE1F8A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +37,6 @@ Global
 		{530C9121-C931-462F-86EF-77836FB7DF4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{530C9121-C931-462F-86EF-77836FB7DF4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{530C9121-C931-462F-86EF-77836FB7DF4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAB32089-BB3F-4957-B1B0-B3241F6B8F4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE4AD11F-CF34-4972-A36B-D7C170C93CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,9 +45,21 @@ Global
 		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82E0591E-2B01-4DC4-B1BC-A064177C5552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BCF211B-75BA-40E2-84E8-1448B475E7D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BCF211B-75BA-40E2-84E8-1448B475E7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BCF211B-75BA-40E2-84E8-1448B475E7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BCF211B-75BA-40E2-84E8-1448B475E7D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8339C4-B141-4945-9795-E2B69AE1F8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8339C4-B141-4945-9795-E2B69AE1F8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8339C4-B141-4945-9795-E2B69AE1F8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8339C4-B141-4945-9795-E2B69AE1F8A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7BCF211B-75BA-40E2-84E8-1448B475E7D5} = {42B95607-A2CC-4FAD-9EAF-72A4F6316F45}
+		{4B8339C4-B141-4945-9795-E2B69AE1F8A0} = {42B95607-A2CC-4FAD-9EAF-72A4F6316F45}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7CF4EB1B-0755-44B0-8EB6-3D078FFBBA9D}

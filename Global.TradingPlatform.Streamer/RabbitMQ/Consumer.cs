@@ -34,6 +34,7 @@ namespace Global.TradingPlatform.Streamer
             var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                VirtualHost = _configuration["RabbitMQ:VirtualHost"],
                 //UserName = _configuration["RabbitMQ:UserName"],
                 //Password = _configuration["RabbitMQ:Password"]
             };

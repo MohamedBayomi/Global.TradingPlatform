@@ -22,19 +22,23 @@ namespace Global.TradingPlatform.Exchange
             _logger = logger;
             _configuration = configuration;
             _producer = producer;
-            
+
             InitializeRabbitMQ();
         }
 
         private void InitializeRabbitMQ()
         {
+            _logger.LogWarning("Initializing RabbitMQ...");
             var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                VirtualHost = _configuration["RabbitMQ:VirtualHost"],
                 //UserName = _configuration["RabbitMQ:UserName"],
                 //Password = _configuration["RabbitMQ:Password"]
             };
+            _logger.LogWarning($"Creating connection... for {_configuration["RabbitMQ:HostName"]} / {_configuration["RabbitMQ:VirtualHost"]}");
             _connection = factory.CreateConnection();
+            _logger.LogWarning($"Creating channel... for {_configuration["RabbitMQ:HostName"]} / {_configuration["RabbitMQ:VirtualHost"]}");
             _channel = _connection.CreateModel();
         }
 
@@ -91,7 +95,8 @@ namespace Global.TradingPlatform.Exchange
             var strDelay = _configuration["settings:delay"];
             int.TryParse(strDelay, out delay);
 
-            var e = new Execution { 
+            var e = new Execution
+            {
                 OrderID = order.OrderID,
                 OrderQty = order.Quantity,
                 LastShares = 0,
@@ -102,13 +107,14 @@ namespace Global.TradingPlatform.Exchange
                 OperationTime = DateTime.UtcNow
             };
             _producer.SendOrder(e);
-            Task.Delay(delay).Wait();
+            if (delay > 0)
+                Task.Delay(delay).Wait();
             order.ExecutedQuantity = 0;
             order.RemainingQuantity = order.Quantity;
 
             if (order.Quantity < executions)
                 executions = order.Quantity;
-            
+
             int delta = order.Quantity / executions;
             int error = order.Quantity - delta * executions;
             int lastShares = 0;
@@ -131,7 +137,7 @@ namespace Global.TradingPlatform.Exchange
                 _producer.SendOrder(e);
                 Task.Delay(delay).Wait();
             }
-            
+
             lastShares = order.Quantity - order.ExecutedQuantity;
             order.ExecutedQuantity = order.Quantity;
             order.RemainingQuantity = 0;

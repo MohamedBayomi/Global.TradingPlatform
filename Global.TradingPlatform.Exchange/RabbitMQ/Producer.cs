@@ -17,6 +17,7 @@ namespace Global.TradingPlatform.Exchange
             var factory = new ConnectionFactory()
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                VirtualHost = _configuration["RabbitMQ:VirtualHost"],
                 //Port = 5671,
             };
             using (var connection = factory.CreateConnection())

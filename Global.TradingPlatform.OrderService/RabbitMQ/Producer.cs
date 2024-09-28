@@ -14,9 +14,10 @@ namespace Global.TradingPlatform.OrderService
 
         public void SendOrder(Order order)
         {
-            var factory = new ConnectionFactory()
+            var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                VirtualHost = _configuration["RabbitMQ:VirtualHost"],
                 //Port = 5671,
             };
             using (var connection = factory.CreateConnection())
