@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Global.TradingPlatform.OrderService
+namespace Global.TradingPlatform.OrderUpdater
 {
     public class TradingPlatformContext : DbContext
     {

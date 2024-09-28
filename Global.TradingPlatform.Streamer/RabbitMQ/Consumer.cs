@@ -28,6 +28,7 @@ namespace Global.TradingPlatform.Streamer
             this.ordersRepository = ordersRepository;
             InitializeRabbitMQ();
         }
+
         private void InitializeRabbitMQ()
         {
             var factory = new ConnectionFactory
@@ -38,16 +39,8 @@ namespace Global.TradingPlatform.Streamer
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-
-            //_channel.QueueDeclare(
-            //    queue: "orders_queue", 
-            //    durable: false, 
-            //    exclusive: false, 
-            //    autoDelete: false, 
-            //    arguments: null);
-
-
         }
+
         public override void Dispose()
         {
             _channel?.Close();
@@ -62,13 +55,13 @@ namespace Global.TradingPlatform.Streamer
             _channel.ExchangeDeclare(exchange: "x_orders", type: ExchangeType.Direct);
 
             var queueName = _channel.QueueDeclare(
-                            queue: "Orders_To_Streamer",           // Leave the queue name empty to let RabbitMQ generate a unique name, or specify your own name.
-                            durable: true,      // Set to true if you want the queue to survive a broker restart.
-                            exclusive: false,    // Set to true if the queue is only used by one connection and will be deleted when that connection closes.
-                            autoDelete: false,   // Set to false to prevent the queue from being automatically deleted when the last consumer unsubscribes.
+                            queue: "Orders_To_Streamer",
+                            durable: true,
+                            exclusive: false,
+                            autoDelete: false,
                             arguments: new Dictionary<string, object>
                             {
-                                { "x-single-active-consumer", true }  // Enable Single Active Consumer
+                                    { "x-single-active-consumer", true }
                             }).QueueName;
 
             _channel.QueueBind(queue: queueName,
@@ -84,11 +77,30 @@ namespace Global.TradingPlatform.Streamer
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                var order = JsonSerializer.Deserialize<Order>(message);
-                ProcessMessageAsync(message);
-                _logger.LogInformation("Received Order: {0} with Hashcode: {1}", message, message.GetHashCode());
 
-                // Here you can do further processing, like saving to a database
+                // Read the header
+                if (ea.BasicProperties.Headers != null && ea.BasicProperties.Headers.TryGetValue("MessageType", out var messageTypeObj))
+                {
+                    var messageType = Encoding.UTF8.GetString((byte[])messageTypeObj);
+                    _logger.LogInformation("Received message with type: {0}", messageType);
+
+                    if (messageType == "x_execution")
+                    {
+                        var execution = JsonSerializer.Deserialize<Execution>(message);
+                        ProcessExecutionAsync(execution);
+                    }
+                    else
+                    {
+                        var order = JsonSerializer.Deserialize<Order>(message);
+                        ProcessOrderAsync(order);
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Message received without MessageType header.");
+                }
+
+                _logger.LogInformation("Received Order: {0} with Hashcode: {1}", message, message.GetHashCode());
             };
 
             _channel.BasicConsume(queue: queueName,
@@ -97,32 +109,42 @@ namespace Global.TradingPlatform.Streamer
 
             _logger.LogInformation("Listening for messages...");
 
-            // Keep the connection alive
-            //while (_connection.IsOpen)
-            //{
-            //    Task.Delay(1000, stoppingToken);
-            //}
             return Task.CompletedTask;
         }
-
 
         private async Task PublishOrderStream(Order order)
         {
             await _ordersStreamHub.Clients.All.ReceiveOrderUpdate(order);
         }
 
-        private Task ProcessMessageAsync(string message)
+        private Task ProcessOrderAsync(Order order)
         {
-            // Simulate some asynchronous work
             return Task.Run(() =>
             {
-                var order = JsonSerializer.Deserialize<Order>(message);
                 ordersRepository.Add(order);
                 PublishOrderStream(order);
-                // Add your message processing logic here
-                _logger.LogInformation(" [x] Received {0} {1}", order.OrderID, order.CreatedBy);
+                _logger.LogInformation(" [x] Received Order {0} {1}", order.OrderID, order.CreatedBy);
             });
         }
 
+        private Task ProcessExecutionAsync(Execution execution)
+        {
+            return Task.Run(() =>
+            {
+                var order = ordersRepository.GetOrderByID(execution.OrderID);
+                if (order != null)
+                {
+                    order.ExecutedQuantity = execution.CumulativeQty;
+                    order.RemainingQuantity = execution.LeavesQuantity;
+                    order.Status = execution.Status;
+                    PublishOrderStream(order);
+                    _logger.LogInformation(" [x] Received Execution {0} {1}", execution.ExecutionID, execution.CumulativeQty);
+                }
+                else
+                {
+                    _logger.LogWarning("Order not found for Execution {0}", execution.ExecutionID);
+                }
+            });
+        }
     }
 }

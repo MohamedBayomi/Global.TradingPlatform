@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Global.TradingPlatform.OrderUpdater
+﻿namespace Global.TradingPlatform.OrderUpdater
 {
     public class Order
     {
@@ -14,5 +12,6 @@ namespace Global.TradingPlatform.OrderUpdater
         public int ExecutedQuantity { get; set; }
         public int RemainingQuantity { get; set; }
         public string CreatedBy { get; set; }
+        public ICollection<Execution> Executions { get; set; }
     }
 }

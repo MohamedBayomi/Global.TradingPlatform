@@ -14,5 +14,6 @@ namespace Global.TradingPlatform.Exchange
         public int ExecutedQuantity { get; set; }
         public int RemainingQuantity { get; set; }
         public string CreatedBy { get; set; }
+        public DateTime OperationTime { get; set; }
     }
 }

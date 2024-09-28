@@ -4,6 +4,7 @@ using Global.TradingPlatform.OrderService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Global.TradingPlatform.OrderService.Migrations
 {
     [DbContext(typeof(TradingPlatformContext))]
-    partial class TradingPlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240928002524_AddExecutions")]
+    partial class AddExecutions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,30 +33,14 @@ namespace Global.TradingPlatform.OrderService.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExecutionID"));
 
-                    b.Property<int>("CumulativeQty")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LastShares")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LeavesQuantity")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("OperationNumber")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("OperationTime")
+                    b.Property<DateTime>("ExecutionTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderID")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrderQty")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ExecutionID");
 
@@ -79,9 +66,6 @@ namespace Global.TradingPlatform.OrderService.Migrations
 
                     b.Property<int>("ExecutedQuantity")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("OperationTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");

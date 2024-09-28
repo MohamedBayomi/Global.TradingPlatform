@@ -15,15 +15,14 @@ namespace Global.TradingPlatform.Exchange
         private readonly ILogger<Consumer> _logger;
         private IConnection _connection;
         private IModel _channel;
-        private int executions;
+        private int executions, delay;
 
         public Consumer(ILogger<Consumer> logger, IConfiguration configuration, IProducer producer)
         {
             _logger = logger;
             _configuration = configuration;
             _producer = producer;
-            var strexecutions = _configuration["settings:executions"];
-            int.TryParse(strexecutions, out executions);
+            
             InitializeRabbitMQ();
         }
 
@@ -87,29 +86,68 @@ namespace Global.TradingPlatform.Exchange
 
         private void Execute(Order order)
         {
+            var strexecutions = _configuration["settings:executions"];
+            int.TryParse(strexecutions, out executions);
+            var strDelay = _configuration["settings:delay"];
+            int.TryParse(strDelay, out delay);
+
+            var e = new Execution { 
+                OrderID = order.OrderID,
+                OrderQty = order.Quantity,
+                LastShares = 0,
+                CumulativeQty = 0,
+                LeavesQuantity = order.Quantity,
+                OperationNumber = Guid.NewGuid(),
+                Status = "Accepted",
+                OperationTime = DateTime.UtcNow
+            };
+            _producer.SendOrder(e);
+            Task.Delay(delay).Wait();
             order.ExecutedQuantity = 0;
             order.RemainingQuantity = order.Quantity;
-            order.Status = "Accepted";
-            _producer.SendOrder(order);
 
             if (order.Quantity < executions)
                 executions = order.Quantity;
             
             int delta = order.Quantity / executions;
             int error = order.Quantity - delta * executions;
-
+            int lastShares = 0;
             for (int i = 1; i < executions; i++)
             {
-                order.ExecutedQuantity += delta + ((error-- > 0) ? 1 : 0);
+                lastShares = delta + ((error-- > 0) ? 1 : 0);
+                order.ExecutedQuantity += lastShares;
                 order.RemainingQuantity = order.Quantity - order.ExecutedQuantity;
-                order.Status = "PartiallyExecuted";
-                _producer.SendOrder(order);
+                e = new Execution
+                {
+                    OrderID = order.OrderID,
+                    OrderQty = order.Quantity,
+                    LastShares = lastShares,
+                    CumulativeQty = order.ExecutedQuantity,
+                    LeavesQuantity = order.RemainingQuantity,
+                    OperationNumber = Guid.NewGuid(),
+                    Status = "PartiallyFilled",
+                    OperationTime = DateTime.UtcNow
+                };
+                _producer.SendOrder(e);
+                Task.Delay(delay).Wait();
             }
-
+            
+            lastShares = order.Quantity - order.ExecutedQuantity;
             order.ExecutedQuantity = order.Quantity;
             order.RemainingQuantity = 0;
-            order.Status = "FullyExecuted";
-            _producer.SendOrder(order);
+            e = new Execution
+            {
+                OrderID = order.OrderID,
+                OrderQty = order.Quantity,
+                LastShares = lastShares,
+                CumulativeQty = order.ExecutedQuantity,
+                LeavesQuantity = order.RemainingQuantity,
+                OperationNumber = Guid.NewGuid(),
+                Status = "Filled",
+                OperationTime = DateTime.UtcNow
+            };
+            _producer.SendOrder(e);
+            Task.Delay(delay).Wait();
         }
 
         private Task ProcessMessageAsync(string message)

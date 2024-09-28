@@ -25,6 +25,12 @@ namespace Global.TradingPlatform.DesktopApp
                 .Build();
 
             _connection.On<Order>("ReceiveOrderUpdate", ReceiveOrderUpdate);
+            _connection.Closed += async (error) =>
+            {
+                // reconnecting ...
+                await Task.Delay(1000);
+                await _connection.StartAsync();
+            };
             _connection.StartAsync();
         }
 
@@ -70,14 +76,14 @@ namespace Global.TradingPlatform.DesktopApp
 
         private static void Merge(Order y)
         {
-            var x = orders.FirstOrDefault(o => o.ClordID == y.ClordID);
+            var x = orders.FirstOrDefault(o => o.OrderID == y.OrderID);
             if (x == null)
             {
                 orders.Add(y);
             }
             else
             {
-                //x.ClordID = y.ClordID;
+                x.ClordID = y.ClordID;
                 x.OrderID = y.OrderID;
                 x.Symbol = y.Symbol;
                 x.Side = y.Side;

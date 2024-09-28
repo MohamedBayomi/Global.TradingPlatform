@@ -27,9 +27,15 @@ namespace Global.TradingPlatform.OrderService
                 string message = System.Text.Json.JsonSerializer.Serialize(order);
                 var body = Encoding.UTF8.GetBytes(message);
 
+                var properties = channel.CreateBasicProperties();
+                properties.Headers = new Dictionary<string, object>
+                {
+                    { "MessageType", "x_order" }
+                };
+
                 channel.BasicPublish(exchange: "x_orders", //default exchange "",messages are routed to the queue with the name specified by routingKey
                                      routingKey: "x_orders",
-                                     basicProperties: null,
+                                     basicProperties: properties,
                                      body: body);
 
                 Console.WriteLine(" [x] Sent {0}", message);

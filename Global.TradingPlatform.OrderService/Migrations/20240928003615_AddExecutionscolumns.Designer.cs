@@ -4,6 +4,7 @@ using Global.TradingPlatform.OrderService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Global.TradingPlatform.OrderService.Migrations
 {
     [DbContext(typeof(TradingPlatformContext))]
-    partial class TradingPlatformContextModelSnapshot : ModelSnapshot
+    [Migration("20240928003615_AddExecutionscolumns")]
+    partial class AddExecutionscolumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

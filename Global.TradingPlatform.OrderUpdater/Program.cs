@@ -1,4 +1,6 @@
-﻿namespace Global.TradingPlatform.OrderUpdater
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Global.TradingPlatform.OrderUpdater
 {
     public class Program
     {
@@ -12,6 +14,8 @@
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Consumer>(); // Register the background worker
+                    services.AddDbContext<TradingPlatformContext>(options => options.UseSqlServer(hostContext.Configuration.GetConnectionString("BrokerageConnection")));
+
                 });
     }
 }

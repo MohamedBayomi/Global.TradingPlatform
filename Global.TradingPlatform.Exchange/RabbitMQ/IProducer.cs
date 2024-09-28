@@ -2,6 +2,6 @@
 {
     public interface IProducer
     {
-        void SendOrder(Order order);
+        void SendOrder(Execution order);
     }
 }

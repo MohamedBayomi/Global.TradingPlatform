@@ -6,7 +6,8 @@
         public string Status { get; set; }
         public int ExecutedQuantity { get; set; }
         public int RemainingQuantity { get; set; }
-
+        public DateTime OperationTime { get; set; }
+        public ICollection<Execution> Executions { get; set; }
         public Order()
         {
 

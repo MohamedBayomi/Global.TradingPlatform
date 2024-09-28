@@ -12,7 +12,7 @@ namespace Global.TradingPlatform.Exchange
             _configuration = configuration;
         }
 
-        public void SendOrder(Order order)
+        public void SendOrder(Execution order)
         {
             var factory = new ConnectionFactory()
             {
@@ -26,10 +26,16 @@ namespace Global.TradingPlatform.Exchange
 
                 string message = System.Text.Json.JsonSerializer.Serialize(order);
                 var body = Encoding.UTF8.GetBytes(message);
+                
+                var properties = channel.CreateBasicProperties();
+                properties.Headers = new Dictionary<string, object>
+                {
+                    { "MessageType", "x_execution" }
+                };
 
                 channel.BasicPublish(exchange: "x_orders",
                                      routingKey: "x_executions",
-                                     basicProperties: null,
+                                     basicProperties: properties,
                                      body: body);
 
                 Console.WriteLine(" [x] Sent {0}", message);
