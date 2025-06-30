@@ -34,9 +34,10 @@ namespace Global.TradingPlatform.OrderUpdater
             var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                Port = int.Parse(_configuration["RabbitMQ:Port"]),
                 VirtualHost = _configuration["RabbitMQ:VirtualHost"],
-                //UserName = _configuration["RabbitMQ:UserName"],
-                //Password = _configuration["RabbitMQ:Password"]
+                UserName = _configuration["RabbitMQ:UserName"],
+                Password = _configuration["RabbitMQ:Password"]
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();

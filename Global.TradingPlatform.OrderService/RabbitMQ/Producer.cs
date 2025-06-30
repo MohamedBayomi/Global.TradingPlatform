@@ -17,8 +17,10 @@ namespace Global.TradingPlatform.OrderService
             var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                Port = int.Parse(_configuration["RabbitMQ:Port"]),
                 VirtualHost = _configuration["RabbitMQ:VirtualHost"],
-                //Port = 5671,
+                UserName = _configuration["RabbitMQ:UserName"],
+                Password = _configuration["RabbitMQ:Password"]
             };
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())

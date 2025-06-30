@@ -32,9 +32,10 @@ namespace Global.TradingPlatform.Exchange
             var factory = new ConnectionFactory
             {
                 HostName = _configuration["RabbitMQ:HostName"],
+                Port = int.Parse(_configuration["RabbitMQ:Port"]),
                 VirtualHost = _configuration["RabbitMQ:VirtualHost"],
-                //UserName = _configuration["RabbitMQ:UserName"],
-                //Password = _configuration["RabbitMQ:Password"]
+                UserName = _configuration["RabbitMQ:UserName"],
+                Password = _configuration["RabbitMQ:Password"]
             };
             _logger.LogWarning($"Creating connection... for {_configuration["RabbitMQ:HostName"]} / {_configuration["RabbitMQ:VirtualHost"]}");
             _connection = factory.CreateConnection();
